@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>Admin Dashboard</h1>
+    <a href="/">Logout</a>
+</nav>
+
+<div class="content">
+    <h2>Willkommen, Admin!</h2>
+
+    <div class="admin-grid">
+
+        <a href="/admin/products" class="admin-card">
+            <h3>📦 Produkte verwalten</h3>
+            <p>Produkte ansehen, ändern oder löschen.</p>
+        </a>
+
+        <a href="/admin/add-product" class="admin-card">
+            <h3>➕ Produkt hinzufügen</h3>
+            <p>Neues Produkt anlegen.</p>
+        </a>
+
+        <a href="/admin/orders" class="admin-card">
+            <h3>🧾 Bestellungen verwalten</h3>
+            <p>Alle Kundenbestellungen einsehen.</p>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>
+

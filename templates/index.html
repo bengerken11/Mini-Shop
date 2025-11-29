@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Mini-Shop</title>
+</head>
+<body>
+<header>
+    <h1>Mini-Shop</h1>
+    <div class="nav">
+        <a href="/">Startseite</a>
+        <a href="/cart">Warenkorb</a>
+        {% if session.get('username') %}
+            <span>Hallo, {{ session['username'] }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Registrieren</a>
+        {% endif %}
+        <a href="/admin/login">Admin</a>
+    </div>
+</header>
+
+<div class="products">
+    {% for product in products %}
+    <div class="product">
+        <a href="/product/{{ product.id }}">
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+        </a>
+        <p>{{ product.description }}</p>
+        <p>{{ product.price }} €</p>
+        <a class="button" href="/add_to_cart/{{ product.id }}">In den Warenkorb</a>
+    </div>
+    {% endfor %}
+</div>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-column">
+            <h3>Rechtliches</h3>
+            <ul>
+                <li><a href="/impressum">Impressum</a></li>
+                <li><a href="/datenschutz">Datenschutz</a></li>
+                <li><a href="/agb">AGB</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Service</h3>
+            <ul>
+                <a href="/kontakt">Kontakt</a>
+                <a href="/faq">FAQ</a>
+                <a href="/versand">Versand & Rückgabe</a>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Newsletter</h3>
+            <p>Erhalte exklusive Angebote direkt per E-Mail:</p>
+            <form action="/newsletter" method="POST">
+                <input type="email" name="email" placeholder="Deine E-Mail" required>
+                <button type="submit">Abonnieren</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 Mini-Shop GmbH | Alle Rechte vorbehalten</p>
+    </div>
+</footer>
+
+</body>
+</html>

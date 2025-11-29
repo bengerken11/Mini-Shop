@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Checkout</title>
+</head>
+<body>
+<header>
+    <h1>Mini-Shop</h1>
+    <div class="nav">
+        <a href="/">Startseite</a>
+        <a href="/cart">Warenkorb</a>
+        {% if session.get('username') %}
+            <span>Hallo, {{ session['username'] }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Registrieren</a>
+        {% endif %}
+    </div>
+</header>
+
+<h2>Checkout</h2>
+
+<form method="POST" action="/checkout">
+    <label>Name:</label>
+    <input type="text" name="name" required><br>
+
+    <label>Adresse:</label>
+    <input type="text" name="address" required><br>
+
+    <label>PLZ / Ort:</label>
+    <input type="text" name="city" required><br>
+
+    <h3>Bestellübersicht</h3>
+    <ul>
+        {% for item in cart_items %}
+        <li>{{ item.name }} x {{ item.quantity }} - {{ "%.2f"|format(item.price * item.quantity) }} €</li>
+        {% endfor %}
+    </ul>
+
+    <p>Gesamt: {{ "%.2f"|format(total) }} €</p>
+
+    <button type="submit">Bestellung abschließen</button>
+</form>
+
+</body>
+</html>

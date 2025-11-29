@@ -1,0 +1,20 @@
+<head>
+    <title>Login - Admin-Bereich</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="login-body"> 
+    
+    <div class="login-card">
+        <h1>Admin Login</h1>
+<form method="POST">
+    <input type="text" name="username" placeholder="Benutzername" required><br>
+    <input type="password" name="password" placeholder="Passwort" required><br>
+    <button type="submit">Einloggen</button>
+</form>
+<a href="/">Zurück zur Startseite</a>
+    </div>
+
+
+
+</body>

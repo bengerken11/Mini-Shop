@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Bestellung erfolgreich</title>
+</head>
+<body>
+<header>
+    <h1>Mini-Shop</h1>
+    <div class="nav">
+        <a href="/">Startseite</a>
+        <a href="/cart">Warenkorb</a>
+        {% if session.get('user_id') %}
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+        {% endif %}
+    </div>
+</header>
+
+<div class="checkout-success">
+    <h2>Vielen Dank für deine Bestellung, {{ name }}!</h2>
+    <p>Der Gesamtbetrag beträgt: <strong>{{ total }} €</strong></p>
+    <p>Deine Bestellung wurde erfolgreich aufgegeben.</p>
+    <a class="button" href="/">Zur Startseite</a>
+</div>
+
+<footer>&copy; 2025 Mini-Shop GmbH</footer>
+</body>
+</html>

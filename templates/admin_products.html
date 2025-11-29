@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Produkte verwalten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>Produkte verwalten</h1>
+    <a href="/admin">Zurück</a>
+</nav>
+
+<div class="content">
+
+    <a class="button" href="/admin/add-product">➕ Produkt hinzufügen</a>
+
+    <table class="product-table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Preis</th>
+            <th>Aktion</th>
+        </tr>
+
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }} €</td>
+            <td>
+                <a class="danger" href="/admin/delete-product/{{ product.id }}">🗑 Löschen</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

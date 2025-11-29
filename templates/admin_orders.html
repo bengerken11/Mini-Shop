@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestellungen verwalten</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .orders-table th, .orders-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .orders-table th {
+            background-color: #4CAF50;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .orders-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .product-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .product-list li {
+            margin-bottom: 4px;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>Admin Dashboard</h1>
+    <div>
+        <a href="/admin">Zurück zum Dashboard</a>
+        <a href="/admin/logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <a href="/admin" class="back-button">⬅ Zurück</a>
+    <h1>Alle Bestellungen</h1>
+    <table class="orders-table">
+        <thead>
+            <tr>
+                <th>Bestell-ID</th>
+                <th>Kunde</th>
+                <th>Produkte</th>
+                <th>Gesamt (€)</th>
+                <th>Datum</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.username }}</td>
+                <td>
+                    <ul class="product-list">
+                    {% for pid_qty in order.product_ids.split(',') %}
+                        {% set parts = pid_qty.split(':') %}
+                        {% if parts|length == 2 %}
+                            {% set pid, qty = parts %}
+                            <li>Produkt ID {{ pid }} × {{ qty }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ order.total }}</td>
+                <td>{{ order.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

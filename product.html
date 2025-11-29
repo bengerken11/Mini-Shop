@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} - Mini-Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<header>
+    <h1>Mini-Shop</h1>
+    <div class="nav">
+        <a href="/">Startseite</a>
+        <a href="/cart">Warenkorb</a>
+        {% if session.get('user_id') %}
+            <span>Hallo, {{ session.username }}!</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Registrieren</a>
+        {% endif %}
+    </div>
+</header>
+
+<div class="product-page">
+
+    <!-- Produktbild -->
+    <div class="product-image">
+        {% if product.image %}
+            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/no_image.png') }}" alt="Kein Bild verfügbar">
+        {% endif %}
+    </div>
+
+    
+
+
+    <!-- Produktinfos -->
+    <div class="product-info">
+        <h2>{{ product.name }}</h2>
+
+        <!-- Sternebewertung -->
+        <div class="rating-display">
+            {% set avg = average_rating if average_rating else 0 %}
+            <div class="stars">
+                {% for i in range(1, 6) %}
+                    {% if i <= avg %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <span class="rating-number">
+                {% if average_rating %}
+                    {{ average_rating|round(1) }}/5
+                {% else %}
+                    Keine Bewertungen
+                {% endif %}
+            </span>
+        </div>
+
+        <p class="price">{{ "%.2f"|format(product.price) }} €</p>
+        <p class="description">{{ product.description }}</p>
+
+        <a class="button" href="/add_to_cart/{{ product.id }}">In den Warenkorb</a>
+    </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- Kundenbewertungen -->
+<div class="reviews-section">
+    <h3>Kundenbewertungen</h3>
+
+    {% if reviews and reviews|length > 0 %}
+        {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <strong>{{ review.username }}</strong>
+                    <span class="review-stars">
+                        {% for i in range(1, 5 + 1) %}
+                            {% if i <= review.rating %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <p>{{ review.comment }}</p>
+                <span class="review-date">{{ review.created_at }}</span>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Noch keine Bewertungen. Sei der Erste!</p>
+    {% endif %}
+</div>
+
+<!-- Bewertung schreiben -->
+{% if session.get("user_id") %}
+<div class="review-form">
+    <h3>Jetzt Bewertung schreiben</h3>
+
+    <form method="POST" action="/product/{{ product.id }}/review">
+        <label>Sterne:</label>
+        <select name="rating" required>
+            <option value="">Bitte wählen</option>
+            <option value="5">★★★★★ - Sehr gut</option>
+            <option value="4">★★★★☆ - Gut</option>
+            <option value="3">★★★☆☆ - Okay</option>
+            <option value="2">★★☆☆☆ - Schlecht</option>
+            <option value="1">★☆☆☆☆ - Sehr schlecht</option>
+        </select>
+
+        <label>Bewertungstext:</label>
+        <textarea name="comment" required placeholder="Wie war deine Erfahrung?"></textarea>
+
+        <button type="submit">Absenden</button>
+    </form>
+</div>
+{% else %}
+<p class="login-hint">Bitte <a href="/login">einloggen</a>, um eine Bewertung zu schreiben.</p>
+{% endif %}
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-column">
+            <h3>Rechtliches</h3>
+            <ul>
+                <li><a href="/impressum">Impressum</a></li>
+                <li><a href="/datenschutz">Datenschutz</a></li>
+                <li><a href="/agb">AGB</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Service</h3>
+            <ul>
+                <li><a href="/kontakt">Kontakt</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/versand">Versand & Rückgabe</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Newsletter</h3>
+            <p>Erhalte exklusive Angebote direkt per E-Mail:</p>
+            <form action="/newsletter" method="POST">
+                <input type="email" name="email" placeholder="Deine E-Mail" required>
+                <button type="submit">Abonnieren</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 Mini-Shop GmbH | Alle Rechte vorbehalten</p>
+    </div>
+</footer>
+
+</body>
+</html>

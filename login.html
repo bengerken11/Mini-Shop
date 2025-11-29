@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-body">
+
+<div class="login-card">
+    <h2>Login</h2>
+
+    {% if error %}
+        <p class="error-msg">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <label>E-Mail</label>
+        <input type="email" name="email" placeholder="E-Mail" required>
+
+        <label>Passwort</label>
+        <input type="password" name="password" placeholder="Passwort" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Noch kein Konto? <a href="/register">Registrieren</a></p>
+</div>
+
+</body>
+</html>

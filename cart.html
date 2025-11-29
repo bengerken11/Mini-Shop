@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Warenkorb</title>
+</head>
+<body>
+<header>
+    <h1>Mini-Shop</h1>
+    <div class="nav">
+        <a href="/">Startseite</a>
+        <a href="/cart">Warenkorb</a>
+        {% if session.get('username') %}
+            <span>Hallo, {{ session['username'] }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Registrieren</a>
+        {% endif %}
+    </div>
+</header>
+
+<h2>Warenkorb</h2>
+
+{% if cart_items %}
+<table>
+    <thead>
+        <tr>
+            <th>Produkt</th>
+            <th>Preis</th>
+            <th>Menge</th>
+            <th>Gesamt</th>
+            <th>Aktion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ "%.2f"|format(item.price) }} €</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ "%.2f"|format(item.price * item.quantity) }} €</td>
+            <td>
+                <a href="/remove_from_cart/{{ item.id }}" class="button">Entfernen</a>
+            </td>
+            <td>
+                <a href="/cart/decrease/{{ item.id }}" class="button">−</a>
+                    {{ item.quantity }}
+                <a href="/cart/increase/{{ item.id }}" class="button">+</a>
+            </td>  
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Gesamt: {{ "%.2f"|format(total) }} €</h3>
+<a href="/checkout" class="button">Zur Kasse</a>
+
+{% else %}
+<p>Dein Warenkorb ist leer.</p>
+{% endif %}
+
+<footer>&copy; 2025 Mini-Shop GmbH</footer>
+</body>
+</html>
